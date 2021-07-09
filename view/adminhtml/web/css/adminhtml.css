@@ -1,0 +1,15 @@
+.config-nav .ck-tab .admin__page-nav-title::before {
+    content: '';
+    background-image: url("../images/cklogo.svg");
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: 0 0;
+    height: 35px;
+    position: absolute;
+    width: 30px;
+    top: 7px;
+}
+
+.config-nav .ck-tab .admin__page-nav-title strong {
+    margin-left: 40px;
+}

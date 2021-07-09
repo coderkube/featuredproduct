@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="ck_profeature" class="Coderkube\Featuredproduct\Block\Widget\Profeature">
+        <label translate="true">CK Featured Products Widget</label>
+        <description>CK Featured Products Widget</description>
+        <parameters>
+            <parameter name="title" xsi:type="text" visible="true">
+                <label translate="true">Add Title</label>
+                <description translate="true">add title on slider</description>
+                <value>Featured Products</value>
+            </parameter>
+            <parameter name="productlimit" xsi:type="text" visible="true">
+                <label translate="true">Product Limit</label>
+                <description translate="true">Number of Products to Display.</description>
+                <value>10</value>
+            </parameter>
+            <parameter name="show_price" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Show Price</label>
+            </parameter>
+            <parameter name="add_to_cart" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Add To Cart</label>
+                <description translate="true">Display add to cart button on slider.</description>
+            </parameter>
+            <parameter name="add_to_wishlist" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Add to Compare</label>
+                <description translate="true">Display add to compare button on slider</description>
+            </parameter>
+            <parameter name="add_to_compare" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Add to Wishlist</label>
+                <description translate="true">Display add to Wishlist button on slider.</description>
+            </parameter>
+            <parameter name="show_review_star" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Display Review Star</label>
+            </parameter>
+            <parameter name="imagewidth" xsi:type="text" visible="true">
+                <label translate="true">Product Image Width</label>
+                <value>340</value>
+            </parameter>
+            <parameter name="imageheight" xsi:type="text" visible="true">
+                <label translate="true">Product Image Height</label>
+                <value>300</value>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets> 

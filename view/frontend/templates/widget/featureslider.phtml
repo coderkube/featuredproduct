@@ -1,0 +1,216 @@
+<?php
+$ckhelper = $this->helper(Coderkube\Featuredproduct\Helper\Data::class);
+$PFCustomCss = '';
+if ($data = ($block->getFeaturedProduct() && $block->getFeaturedProduct()->getSize() && $ckhelper->allowExtension())) {
+    $products = $block->getFeaturedProduct();
+    $productlimit = $block->getData('productlimit');
+    $imagewidth = $block->getData('imagewidth');
+    $imageheight = $block->getData('imageheight');
+    $title = $block->getData('title');
+    $showWishlist = $block->getData('add_to_wishlist');
+    $showCompare = $block->getData('add_to_compare');
+    $showCart = $block->getData('add_to_cart');
+    $price_show = $block->getData('show_price');
+    $show_review_star = $block->getData('show_review_star');
+    $mode = 'grid';
+    $type = 'widget-featured-grid';
+    $image = 'featured_products_content_widget_grid';
+    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    $PFCustomCss = $ckhelper->getPFCustomCss();
+    $productcount = $block->getFeaturedProduct()->getSize();
+    $slider_id = uniqid();
+}
+?>
+<?php if ($data): ?>
+    <div class="block widget block-profeature-products <?= $mode; ?>">
+        <center>
+            <div class="block-title">
+                <h3><?= $title; ?></h3>
+            </div>
+        </center>
+        <div class="block-content">
+            <ol class="product-items <?= $type; ?>">
+                <div class="owl-carousel owl-theme" id="<?= $slider_id;?>">
+                    <?php $iterator = 1; ?>
+                    <?php foreach ($products as $_product): ?>
+                        <?= ($iterator++ == 1) ? '<li class="product-item">' : '</li><li class="product-item">' ?>
+                        <div class="product-item-info">
+                            <?php
+                            $image_url = $block->imageHelperObj()->init($_product, 'product_page_image_small')->setImageFile($_product->getFile())->resize($imagewidth, $imageheight)->getUrl();
+                            ?>
+                            <a href="<?= $_product->getProductUrl() ?>" class="product-item-photo">
+                                <img src="<?= $image_url; ?>" alt="<?= $block->escapeHtml($_product->getName()) ?>" />
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a title="<?= $block->escapeHtml($_product->getName()) ?>" href="<?= /* @escapeNotVerified */ $_product->getProductUrl() ?>" class="product-item-link">
+                                        <?= $block->escapeHtml($_product->getName()) ?>
+                                    </a>
+                                </strong>
+                                <?php if ($price_show): ?>
+                                    <?= $block->getProductPriceHtml($_product, $type); ?>
+                                <?php endif; ?>
+                                <?php if ($templateType && $show_review_star): ?>
+                                    <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
+                                <?php endif; ?>
+                                <?php if ($showWishlist || $showCompare || $showCart): ?>
+                                    <div class="product-item-actions">
+                                        <?php if ($showCart): ?>
+                                            <div class="actions-primary">
+                                                <?php if ($_product->isSaleable()): ?>
+                                                    <?php if (!$_product->getTypeInstance()->isPossibleBuyFromList($_product)): ?>
+                                                        <button class="action tocart primary" data-mage-init='{"redirectUrl":{"url":"<?= $block->escapeUrl($block->getAddToCartUrl($_product)) ?>"}}' type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                        </button>
+                                                    <?php else: ?>
+                                                        <?php
+                                                        $postDataHelper = $this->helper(Magento\Framework\Data\Helper\PostHelper::class);
+                                                        $postData = $postDataHelper->getPostData(
+                                                            $block->escapeUrl($block->getAddToCartUrl($_product)),
+                                                            ['product' => (int) $_product->getEntityId()]
+                                                        )
+                                                        ?>
+                                                        <button class="action tocart primary" data-post='<?= /* @noEscape */ $postData ?>' type="button" title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>">
+                                                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                        </button>
+                                                    <?php endif; ?>
+                                                <?php else: ?>
+                                                    <?php if ($_product->getIsSalable()): ?>
+                                                        <div class="stock available">
+                                                            <span><?= $block->escapeHtml(__('In stock')) ?></span>
+                                                        </div>
+                                                    <?php else: ?>
+                                                        <div class="stock unavailable">
+                                                            <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <?php if ($showWishlist || $showCompare): ?>
+                                            <div class="actions-secondary" data-role="add-to-links">
+                                                <?php if ($this->helper(Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist): ?>
+                                                    <a href="#" data-post='<?= $this->helper(Magento\Wishlist\Helper\Data::class)->getAddParams($_product) ?>' class="action towishlist" data-action="add-to-wishlist" title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>">
+                                                        <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+                                                    </a>
+                                                <?php endif; ?>
+                                                <?php if ($showCompare): ?>
+                                                    <?php $compareHelper = $this->helper(Magento\Catalog\Helper\Product\Compare::class); ?>
+                                                    <a href="#" class="action tocompare" data-post='<?= /* @noEscape */ $compareHelper->getPostDataParams($_product) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Compare')) ?>">
+                                                        <span><?= $block->escapeHtml(__('Add to Compare')) ?></span>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?= ($iterator == count($products)) ? '</li>' : '' ?>
+                    <?php endforeach ?>
+                </div>
+            </ol>
+        </div>
+    </div>
+    <?php
+endif; ?>
+
+<?php if ($data): ?>
+    <script type="text/javascript" xml="space">
+        require([
+            'jquery',
+            'owlcarousel'
+        ], function($) {
+            var owl = $('#<?= $slider_id;?>');
+            console.log(owl);
+            let itemcount = 0;
+            let productcount = 0;
+            itemcount = <?= $productlimit; ?>;
+            productcount = <?= $productcount; ?>;
+            if (itemcount <= 1) {
+                loop1item = false;
+            } else if (productcount <= 1) {
+                loop1item = false;
+            } else {
+                loop1item = true;
+            }
+
+            if (itemcount <= 2) {
+                loop2item = false;
+            } else if (productcount <= 2) {
+                loop2item = false;
+            } else {
+                loop2item = true;
+            }
+
+            if (itemcount <= 3) {
+                loop3item = false;
+            } else if (productcount <= 3) {
+                loop3item = false;
+            } else {
+                loop3item = true;
+            }
+
+            if (itemcount <= 4) {
+                loop4item = false;
+            } else if (productcount <= 4) {
+                loop4item = false;
+            } else {
+                loop4item = true;
+            }
+
+            if (itemcount <= 5) {
+                loop5item = false;
+            } else if (productcount <= 5) {
+                loop5item = false;
+            } else {
+                loop5item = true;
+            }
+            $(document).ready(function() {
+                owl.owlCarousel({
+                    margin: 10,
+                    slidespeed: 200,
+                    dots: false,
+                    nav: false,
+                    navRewind: true,
+                    autoplay: true,
+                    autoplayHoverPause: true,
+                    responsiveClass: true,
+                    responsive: {
+                        0: {
+                            items: 1,
+                            loop: loop1item
+                        },
+                        300: {
+                            items: 2,
+                            loop: loop2item
+                        },
+                        639: {
+                            items: 3,
+                            loop: loop3item
+                        },
+                        999: {
+                            items: 4,
+                            loop: loop4item
+                        },
+                        1080: {
+                            items: 5,
+                            loop: loop5item
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <style type="text/css">
+        /* Featured product custom css */
+
+        <?php if ($ckhelper->getPFCustomCss()) {
+            ?><?= $PFCustomCss; ?><?php } ?>
+    </style>
+
+    <?php
+endif; ?>

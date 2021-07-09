@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="coderkube" translate="label" sortOrder="350" class="ck-tab">
+            <label>Coderkube</label>
+        </tab>
+        <section id="ck_profeature_config" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Featured Products</label>
+            <tab>coderkube</tab>
+            <resource>Coderkube_Featuredproduct::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <attribute type="expanded">1</attribute>
+                <field id="status" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Status</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable / Disable Coderkube Product Featured Module</comment>
+                </field>
+                <field id="version" translate="label" type="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Current Version</label>
+                    <comment>Coderkube Featured Product Module version</comment>
+                </field>
+                <field id="mail" translate="label" type="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Contact Us</label>
+                    <comment>https://coderkube.com/contact-us</comment>
+                </field>
+            </group>
+            <group id="pro_design" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Design</label>
+                <field id="profeature_custom_css" translate="label" sortOrder="60" type="textarea" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Css</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+
